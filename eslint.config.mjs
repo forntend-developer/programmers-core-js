@@ -31,7 +31,8 @@ export default defineConfig([
         ...globals.browser, 
         ...globals.node, 
         ...types, 
-        ...lib
+        ...lib,
+        gsap:true
       } 
     },
     rules: {
