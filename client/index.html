@@ -10,63 +10,25 @@
     <script src="./chapter/utils/type.js"></script>
     <script src="./chapter/utils/getNode.js"></script>
     <script src="./chapter/utils/insert.js"></script>
-    <script src="./chapter/dom/09.event.js" defer></script>
+    <script src="./main.js" defer></script>
   </head>
   <body>
-
-    <div class='about'>안뇽?</div>
-    
-    <nav class="navigation">
-      <li><a href="./">HOME</a></li>
-      <li class="about"><a href="./about">ABOUT</a></li>
-      <li data-name="contact"><a href="./contact">CONTACT</a></li>
-    </nav>
-
-    <div id="app"></div>
-
-    <h1>
-      <span class="first">core</span>
-      <!-- 주석입니다 -->
-      <!-- 주석입니다 -->
-      <!-- 주석입니다 -->
-      <!-- 주석입니다 -->
-      <!-- 주석입니다 -->
-       
-      <span class="second">javascript</span>
-    </h1>
-
-    <!--<button type="button" class="btn">click me!</button>
-     <form class="todo">
-      <label for="txt">TODO:</label>
-      <input type="text" id="txt" class="todoInput"/>
-      <button class="todoButton">ADD</button>
-    </form>
-  
-    <ul class="todolist">
-      <li>할일</li> 
-    </ul> -->
-
-
-
-    <!-- <div class="space">
-      <div class="circle"></div>
-    </div> -->
-
-    <!-- <ul></ul>
-    
-    <video autoplay id="videoElement"></video> -->
-
-    <!-- <div class="ground">
-      <div class="ball">
-        <img src="https://en.js.cx/clipart/ball.svg" alt="축구공" />
+    <form class="calculator">
+      <div class="first">
+        <label for="firstNumber">First Value</label>
+        <input type="number" name="first" id="firstNumber" required />
       </div>
-    </div> -->
 
+      <div class="operator">+</div>
 
-    <section>
-      <article>
-        <p></p>
-      </article>
-    </section>
+      <div class="second">
+        <label for="secondNumber">Second Value</label>
+        <input type="number" name="second" id="secondNumber" required />
+      </div>
+
+      <input id="clear" type="submit" value="clear" />
+
+      <div class="result">-</div>
+    </form>
   </body>
 </html>
