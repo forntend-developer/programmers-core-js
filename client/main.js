@@ -1,6 +1,6 @@
 
 
-import {diceAnimation, getNode, attr, insertLast} from './lib/index.js';
+import {diceAnimation, getNode, attr, insertLast, clearContents, endScroll, memo} from './lib/index.js';
 
 console.log(diceAnimation);
 
@@ -71,10 +71,10 @@ function creatItem(value){
 
 function rendarRecordItem(){
  
-  const diceNumber = +attr('#cube','dice');
+  const diceNumber = +attr(memo('cube'),'dice');
   
   insertLast('tbody', creatItem(diceNumber));
-  recordListWrapper.scrollTop = recordListWrapper.scrollHeight
+  endScroll(recordListWrapper);
 
 }
 
@@ -111,6 +111,10 @@ function handleRecord(){
 
 function handleReset(){
   recordListWrapper.hidden = true;
+  clearContents('tbody')
+  count = 0;
+  total = 0;
+
 }
 
 
