@@ -1,187 +1,56 @@
-import {
-  tiger,
-  delayP,
-  getNode,
-  END_POINT,
-  insertLast,
-  changeColor,
-  renderSpinner,
-  renderUserCard,
-  renderEmptyCard,
-  clearContents,
-} from './lib/index.js';
+import {getNode, getStorage, setStorage, deleteStorage} from './lib/index.js';
+
+
+
+function debounce(f, limit = 1000) {
+  let timeout;
+
+  return function (e) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      f.call(this,e)
+    }, limit);
+  };
+}
+
 
 /* 
-  1. 태그 template 만들기 
-      - `<div></div>`
 
-  2. 태그 렌더링하기
-      - insertLast
+1. 인풋 이벤트 바인딩
+
+
+2. 인풋 값을 로컬 스토리지에 저장 (타이핑 하는 순간순간)
+
+
+3. 새로고침시 데이터가 textarea 안에 유지될 수 있게 설정
+
+
+4. clear 버튼 클릭시 모든 데이터 제거 
+
+
 */
 
-const userCardInner = getNode('.user-card-inner');
 
-async function renderUserList() {
-  renderSpinner(userCardInner);
-
-  // await delayP(2000)
-
-  try {
-    const { data } = await tiger.get(END_POINT);
-
-    // getNode('.loadingSpinner').remove();
-
-    gsap.to('.loadingSpinner', {
-      opacity: 0,
-      duration: 1,
-      onComplete() {
-        this._targets[0].remove();
-        data.forEach((user) => renderUserCard(userCardInner, user));
-        changeColor('.user-card');
-
-        gsap.from('.user-card', {
-          opacity: 0,
-          stagger: 0.1,
-          x: -30,
-        });
-      },
-    });
-  } catch {
-    gsap.to('.loadingSpinner', {
-      opacity: 0,
-      duration: 1,
-      onComplete() {
-        this._targets[0].remove();
-        renderEmptyCard(userCardInner);
-      },
-    });
-  }
-}
-
-renderUserList();
-
-function handleDelete(e) {
-  const button = e.target.closest('button');
-
-  if (!button) return;
-
-  const id = button.dataset.value;
-
-  tiger.delete(`${END_POINT}/${id}`).then(() => {
-    alert('삭제가 완료됐습니다!');
-    clearContents(userCardInner);
-  });
-}
+const textField = getNode('#textField');
+const clearButton = getNode('button[data-name="clear"]');
 
 
 
+function handleText(){
+  const value = this.value;
 
-
-
-
-userCardInner.addEventListener('click', handleDelete);
-
-const creatButton = getNode('.create');
-const cancelButton = getNode('.create .cancel');
-const doneButton = getNode('.create .done');
-
-
-
-function handleCreate() {
-  const pop = getNode('.create .pop');
-  // pop.style.opacity = 1;
-  // pop.style.visibility = 'initial;
-
-  gsap.to(pop, {
-    autoAlpha: 1,
-  });
-}
-
-
-function handleCancel(e) {
-  e.stopPropagation()   // 보통 팝업창 같은데서 버블링 방지로 사용함
-
-  gsap.to('.create .pop', {
-    autoAlpha: 0,
-  });
-}
-
-function handleDone(e) {
-  e.preventDefault();
-
-  const username = getNode('#nameField').value;
-  const email = getNode('#emailField').value;
-  const website = getNode('#siteField').value;
-
-  tiger.post(END_POINT, {    //post 통신 다시 공부하기!
-    username,
-    email,
-    website
-  }).then(()=>{
-
-    gsap.to('.create .pop', {autoAlpha:0});
-    clearContents(userCardInner);  // 이부분도 다시 보기
-    renderUserList(); // 이부분도 다시 보기
-
-
-    getNode('#nameField').value = '';
-    getNode('#emailField').value = '';
-    getNode('#siteField').value = '';
-  })
-
+  setStorage('text',value)
   
 }
 
-
-
-creatButton.addEventListener('click', handleCreate);
-cancelButton.addEventListener('click', handleCancel);
-doneButton.addEventListener('click', handleDone);
-
-
-
-const registerButton = getNode('.register');
-const registerCancelButton = getNode('.register .cancel');
-const registerDoneButton = getNode('.register .done');
-
-
-
-function handleRegister(){
-  gsap.to('.register .pop',{autoAlpha:1})
+function init(){
+  getStorage('text')
+  .then((res)=>{
+    textField.value = res;
+  })
 }
 
-function handleRegisterCancel(e){
-  e.stopPropagation();
-  gsap.to('.register .pop',{autoAlpha:0})
-}
-
-function handleRegisterCreate(e){
-   e.preventDefault();
-
-  const name = getNode('#create-name').value;
-  const password = getNode('#create-password').value;
-
-  tiger.post('http://localhost:3000/register',{
-    email:'tiger@gmail.com',
-    password:'123123'
-  });
-}
+textField.addEventListener('input',debounce(handleText,300))
+window.addEventListener('DOMContentLoaded',init) // == init()
 
 
-registerButton.addEventListener('click',handleRegister);
-registerCancelButton.addEventListener('click',handleRegisterCancel);
-registerDoneButton.addEventListener('click',handleRegisterCreate);
-
-
-
-
-
-
-
-const isLogin = await tiger.post('http://localhost:3000/login', {
-  email:'tiger@gmail.com',
-  password:'123123'
-})
-
-alert(`${isLogin.data.user.email}님 환영합니다!`)
-console.log(isLogin.data);

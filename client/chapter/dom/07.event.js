@@ -78,7 +78,7 @@ ground.addEventListener('mousemove', throttle(handleMove)); //handleMove는 콜�
 //const a = debounce(handleMove);
 
 //debounce()();
-function debounce(f,limit = 1000){    // 클로저
+export function debounce(f,limit = 1000){    // 클로저
   let timeout;
 
   return function(e){
