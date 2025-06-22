@@ -25,7 +25,7 @@ const arrayLike = { // 유사 배열
   3:()=>{},
   4:100,
   length:5,
-  //Symbol() 강제적으로 심어서 iterable 돌릴 수도 있다... 다시 필기...
+   // Symbol(Symbol.iterator) (){} 강제적으로 심어서 iterable 돌릴 수도 있다... 다시 필기...
 }
 
 // for(const key of 'hello javascript'){
@@ -79,7 +79,8 @@ for(const value of languages){
 
 
 
-// - 특정 조건에서 건너띄기    다시 작성하기!!!!!
+// - 특정 조건에서 건너띄기
+// - 특정 조건에서 중단하기
 
 for(const value of languages){
 
