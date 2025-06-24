@@ -1,4 +1,15 @@
 
+const template = document.createElement('template');
+
+template.innerHTML = `
+ <style>
+      @import url('./components/Counter/Counter.css');
+    </style>
+    <button type="button" class="decrement" aria-label="감소">-</button>
+    <span>${10}</span>
+    <button type="button" class="increment" aria-label="증가">+</button>
+`
+
 
 class Counter extends HTMLElement {
   constructor(){
@@ -56,14 +67,15 @@ class Counter extends HTMLElement {
 
   render(){
     const {value} = this.state;
-    this.shadowRoot.innerHTML = `
-    <style>
-      @import url('./components/Counter/Counter.css');
-    </style>
-    <button type="button" class="decrement" aria-label="감소">-</button>
-    <span>${value}</span>
-    <button type="button" class="increment" aria-label="증가">+</button>
-    `
+    this.shadowRoot.append(template.content.cloneNode(true))
+
+    //  <style>
+    //   @import url('./components/Counter/Counter.css');
+    // </style>
+    // <button type="button" class="decrement" aria-label="감소">-</button>
+    // <span>${value}</span>
+    // <button type="button" class="increment" aria-label="증가">+</button>
+    // `
   }
 }
 
